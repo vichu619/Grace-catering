@@ -134,7 +134,7 @@ const addCategory = async (req, res) => {
                 })
                 const categoryData = category.save();
                 if (categoryData) {
-                    res.redirect('/admin/categories')
+                    res.redirect('/admin/Categories')
                 } else {
                     res.render("addCategory", { errMsg: "Something went wrong" })
                 }
@@ -200,6 +200,7 @@ const loadAddProduct = async (req, res) => {
         const uniqueSKU = await generateUniqueSKU();
         const categoryData = await Category.find({})
         res.render('addProduct', { SKU: uniqueSKU, categoryData })
+        console.log("product added");
     } catch (error) {
         console.log(error.message);
     }
