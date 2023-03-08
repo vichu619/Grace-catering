@@ -6,7 +6,7 @@ user_route.set('views', './views/user')
 
 const auth = require('../middleware/userAuth')
 
-//User Login(OTP inc)
+//User Login
 user_route.get('/home',userController.loadHome)
 user_route.get('/',userController.loadHome)
 user_route.get('/login',auth.isLogout,userController.loadLogin);

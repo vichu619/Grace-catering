@@ -138,11 +138,15 @@ const loadWishlist = async (req, res) => {
 }
 const loadCart = async (req, res) => {
     try {
+        console.log("in cart");
         if (req.session.userId) {
-
+            console.log("inside cart if");
             const userData = await User.findOne({ _id: req.session.userId })
             const userCart = await Cart.findOne({ userId: userData._id }).populate('products.productId')
+            console.log(userData);
+            console.log(userCart);
             if (userCart) {
+                console.log("inside usercart if");
                 const productsArray = userCart.products;
                 const products = productsArray.map((product) => ({
                     id: product._id,
