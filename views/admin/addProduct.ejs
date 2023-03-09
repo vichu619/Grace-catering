@@ -16,11 +16,7 @@
               <img src="/adminAssets/images/faces/face28.jpg" alt="profile"/>
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-              <a class="dropdown-item">
-                <i class="ti-settings text-primary"></i>
-                Settings
-              </a>
-              <a href="/admin/login" class="dropdown-item">
+              <a href="/admin/logout" class="dropdown-item">
                 <i class="ti-power-off text-primary"></i>
                 Logout
               </a>
@@ -100,19 +96,6 @@
               <span class="menu-title">Orders</span>
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" href="couponsDetail.html">
-              <i class="icon-ribbon menu-icon"></i>
-              <span class="menu-title">Coupons</span>
-            </a>
-          </li>
-          
-          <li class="nav-item">
-            <a class="nav-link" href="bannerDetails.html">
-              <i class="icon-layout menu-icon"></i>
-              <span class="menu-title">Banner</span>
-            </a>
-          </li>
         </ul>
       </nav>
       <!-- partial -->
@@ -143,10 +126,10 @@
                   </div>
                   <div class="row">
                     <div class="col-md-6">
-                      <div class="form-group row">
+                      <div class="form-group row ">
                         <label class="col-sm-3 col-form-label">MRP</label>
                         <div class="col-sm-9">
-                          <input name="MRP" type="text" class="form-control" />
+                          <input name="MRP" type="number" dir="rtl"  class="form-control" />
                         </div>
                       </div>
                     </div>
@@ -154,7 +137,7 @@
                       <div class="form-group row">
                         <label class="col-sm-3 col-form-label">Sale Price</label>
                         <div class="col-sm-9">
-                          <input name="salePrice" type="text" class="form-control" />
+                          <input name="salePrice" type="number" dir="rtl" class="form-control" />
                         </div>
                       </div>
                     </div>
@@ -177,7 +160,7 @@
                       <div class="form-group row">
                         <label class="col-sm-3 col-form-label">Stock</label>
                         <div class="col-sm-9">
-                          <input name="stock" type="text" class="form-control" />
+                          <input name="stock" type="number" dir="rtl" class="form-control" />
                         </div>
                       </div>
                     </div>

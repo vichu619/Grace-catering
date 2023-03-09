@@ -42,7 +42,7 @@ admin_route.get('/deleteProduct',adminController.deleteProduct)
 admin_route.get('/deleteImg',adminController.imageDelete)
 
 //Common Route
-admin_route.get('*',(req,res)=>{res.redirect('/admin/home')});
+admin_route.get('*',(req,res)=>{res.redirect('/admin/login')});
 
 
 module.exports=admin_route;

@@ -13,6 +13,7 @@ const productSchema=mongoose.Schema({
     MRP:{
         type:Number,
         required:true
+
     },
     salePrice:{
         type:Number,

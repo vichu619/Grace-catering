@@ -1,4 +1,5 @@
 <%- include('../layout/userHeader.ejs') %>
+
 <div id="page" class="site page-home">
     <aside class="site-off desktop-hide">
         <div class="off-canvas">
@@ -53,7 +54,7 @@
                         <nav class="mobile-hide">
                             <ul class="flexitem second-links">
                                 <li><a href="/home">Home</a></li>
-                                <li><a href="/shop">About Us</a></li>
+                                <li><a href="/shop">Menu</a></li>
                                 <li><a href="#">Gallery</a></li>
                                 <li><a href="#">Contact Us</a></li>
                             </ul>
@@ -132,8 +133,8 @@
                     <div class="column">
                         <div class="holder">
                             <div class="row sidebar">
-                                <div class="filter">
-                                    <div class="filter-block">
+                                <div class="filter bg-light">
+                                    <div class="filter-block "">
                                         <h4>Category</h4>
                                         <ul>
                                             <li>
@@ -253,21 +254,12 @@
                                                     <li><a href="#"><i class="ri-shuffle-line"></i></a></li>
                                                 </ul>
                                             </div>
-                                            <div class="discount circle flexcenter">
-                                                <% 
-                                                    const offerPercentage = ((product.MRP - product.salePrice) / product.MRP) * 100;
-                                                %>
-                                                <span><%= offerPercentage.toFixed(0) %>%</span></div>
+                                            
                                         </div>
                                         <div class="content">
-                                            <div class="rating">
-                                                <div class="stars"></div>
-                                                <span class="mini-text">(0)</span>
-                                            </div>
                                             <h3><a href="/public/product?id=<%= product._id %>"><%= product.productName %></a></h3>
                                             <div class="price">
-                                                <span class="current">₹<%= product.salePrice %></span>
-                                                <span class="normal mini-text">₹<%= product.MRP %></span>
+                                                <span class="current">₹<%= product.MRP %></span>
                                             </div>
                                         </div>
                                     </div>
@@ -289,23 +281,6 @@
     <!-- Main -->
 
     <footer>
-        <div class="newsletter">
-            <div class="container">
-                <div class="wrapper">
-                    <div class="box">
-                        <div class="content">
-                            <h3>Join Our Newsletter</h3>
-                            <p>Get E-mail updates about our latest shop and <strong>special offers</strong></p>
-                        </div>
-                        <form action="" class="search">
-                            <span class="icon-large"><i class="ri-mail-line"></i></span>
-                            <input type="mail" placeholder="Your email address" required>
-                            <button type="submit">Sign Up</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
         <!-- newsletter -->
 
         <div class="widgets">
@@ -378,7 +353,7 @@
                 <div class="wrapper">
                     <div class="flexcol">
                         <div class="logo">
-                            <a href=""><span class="circle"></span>Grace</a>
+                            <a href=""><span class="circle"></span>Grace Catering</a>
                         </div>
                         <div class="socials">
                             <ul class="flexitem">
