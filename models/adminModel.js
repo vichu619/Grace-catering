@@ -9,6 +9,10 @@ const adminSchema=mongoose.Schema({
         type:String,
         required:false
     },
+    mobileNum:{
+        type:Number,
+        required:true
+    },
     password:{
         type:String,
         required:false
@@ -20,6 +24,10 @@ const adminSchema=mongoose.Schema({
     adminPassword:{
         type:String,
         required:false
+    },
+    status:{
+        type:Boolean,
+        default:true
     }
 
 })

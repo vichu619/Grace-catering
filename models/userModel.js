@@ -13,6 +13,10 @@ const userSchema=mongoose.Schema({
         type:String,
         required:true
     },
+    mobileNum:{
+        type:Number,
+        required:true
+    },
     status:{
         type:Boolean,
         default:true

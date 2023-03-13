@@ -44,7 +44,10 @@ admin_route.get('/editProduct',adminController.loadEditProduct);
 admin_route.post('/addProduct',upload.array('image',3),adminController.addProduct);
 admin_route.post('/editProduct',upload.array('image',3),adminController.updateProduct);
 admin_route.get('/deleteProduct',adminController.deleteProduct)
-//admin_route.get('/deleteImg',adminController.imageDelete)
+
+
+//Order
+
 
 //Common Route
 admin_route.get('*',(req,res)=>{res.redirect('/admin/login')});
