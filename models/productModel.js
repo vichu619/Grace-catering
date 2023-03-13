@@ -10,30 +10,10 @@ const productSchema=mongoose.Schema({
         type:String,
         required:true
     },
-    MRP:{
-        type:Number,
-        required:true
-
-    },
-    salePrice:{
-        type:Number,
-        required:true
-    },
-    stock:{
-        type:Number,
-        required:true
-    },
     category:{
         type:ObjectId,
         required:true,
         ref:"Category"
-    },
-    description:{
-        type:String,
-        required:true
-    },
-    image:{
-        type:Array
     },
     isDeleted:{
         type:Boolean,

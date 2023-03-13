@@ -14,6 +14,11 @@ admin_route.get('/login',adminController.loadLogin)
 admin_route.get('/logout',adminController.logOut)
 admin_route.post('/login',adminController.verifyLogin)
 
+//Register
+admin_route.get('/register',adminController.loadRegister)
+admin_route.post('/register',adminController.insertAdmin)
+
+
 //Dashboard
 admin_route.get('/home',adminController.loadDashoard)
 
@@ -39,7 +44,7 @@ admin_route.get('/editProduct',adminController.loadEditProduct);
 admin_route.post('/addProduct',upload.array('image',3),adminController.addProduct);
 admin_route.post('/editProduct',upload.array('image',3),adminController.updateProduct);
 admin_route.get('/deleteProduct',adminController.deleteProduct)
-admin_route.get('/deleteImg',adminController.imageDelete)
+//admin_route.get('/deleteImg',adminController.imageDelete)
 
 //Common Route
 admin_route.get('*',(req,res)=>{res.redirect('/admin/login')});

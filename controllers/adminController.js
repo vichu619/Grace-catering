@@ -30,34 +30,163 @@ const loadLogin = (req, res) => {
 const adminemail = "admin@gmail.com";
 const adminpassword = 12345;
 
-// Verify adminLogin
-const verifyLogin = (req, res) => {
+//Verify adminLogin
+const verifyLogin = async (req, res) => {
     try {
-        // const { email, password } = req.body;
-        // const adminData = await Admin.findOne({ email: email })  console.log(req.body);
+        console.log("in login");
+        const { adminEmail, adminPassword } = req.body
+        //console.log(req.body);
         let email = req.body.email;
         let password = req.body.password;
-        let data = {
-            email: email,
-            password: password,
-        };
-        if ((adminemail == data.email && adminpassword == data.password) ||
-            req.session.adminlogged) {
-            //const passwordMatch = await bcrypt.compare(password, adminData.password);
-            // if (passwordMatch) {
-            //     res.redirect('/admin')
-            // } else {
-            //     res.render('login', { errMsg: "Email Or Password Is incorrect" })
-            // }
-            console.log("admin home reached");
-            req.session.adminlogged = true;
-            req.session.adminlogerror = false;
-            res.redirect("/admin");
-        } else {
+        // let data = {
+        //     adminemail: email,
+        //     adminpassword: password,
+        // };
+        const adminData = Admin.findOne({ adminEmail: email })
+        console.log("checking email in server");
+        if (adminemail==email) {
+            console.log("in email set in db");
+            //const passwordMatch = await bcrypt.compare(password, data.password);
+            console.log("checking password");
+            if (password ==adminpassword) {
+                console.log("password matched");
+                req.session.adminlogged = true;
+                req.session.adminlogerror = false;
+                console.log("Main admin home reached");
+                console.log("adminlogged set to true")
+                res.render('dashboard')   
+                
+            } else {
+                console.log("password match failed");
+                res.render('login', { errMsg: "Email Or Password Is incorrect" })
+            }
+        }
+        else if (adminData) {
+            console.log("inside admin data to compare password");
+            //const passwordMatch =await bcrypt.compare(req.body.password, adminPassword)
+
+            console.log("comparing bcrpt password to login");
+            if (password===adminPassword) {
+                console.log("task success and logined into admin panel");
+                req.session.adminlogged = true;
+                req.session.adminlogerror = false;
+                res.render('dashboard')
+            } else {
+                console.log("password error");
+                res.render('login', { errMsg: "Email Or Password Is incorrect" })
+            }
+        }
+        else {
             res.render('login', { errMsg: "Email Or Password Is incorrect" })
         }
     } catch (error) {
         console.log(error.message);
+    }
+}
+
+// const verifyLogin = async (req, res) => {
+//     try {
+//         const email = req.body.email;
+//         const password = req.body.password;
+//         const data = {
+//             email: email,
+//             password: password,
+//         };
+//         const { adminEmail, adminPassword } = req.body;
+//         const adminData = await Admin.findOne({ adminEmail: email })
+//         console.log("inside verify login");
+//         if (adminData || (email == data.email && password == data.password) ){
+//             console.log("inside admin data ");
+//             if (data.email || adminEmail && adminPassword || email == data.email && password == data.password) {
+//                 console.log("checking emails ");
+//                 const passwordMatch = await bcrypt.compare(password, adminData.adminpassword || adminData.adminPassword);
+//                 console.log("password checked");
+//                 if (passwordMatch) {
+//                     console.log("task successful and admin logged in");
+//                     req.session.adminlogged = true;
+//                     req.session.adminlogerror = false;
+//                     res.render('dashboard');
+//                 } else {
+//                     res.render('login', { errMsg: "Password is Incorrect" })
+//                 }
+//             } else {
+//                 res.render('login', { errMsg: "Your Account is blocked by Admin" })
+//             }
+//         } else {
+//             console.log("verification failed");
+//             res.render('login', { errMsg: "Email Or Phone Number is not Registered" })
+//         }
+//     } catch (error) {
+//         console.log(error.message);
+//     }
+// }
+
+
+
+
+//load Register Page
+const loadRegister = async (req, res) => {
+    try {
+        if (req.session.adminlogged) {
+            res.render('register')
+        }
+        else {
+            res.render('login')
+        }
+    }
+    catch (error) {
+        console.log(error.message);
+    }
+}
+
+//Registering Admin
+const insertAdmin = async (req, res) => {
+    try {
+        console.log("insert admin");
+        const { name, email, password, repassword } = req.body;
+        if (name.trim() == "" || email.trim() == "" || password.trim() == "" || repassword.trim() == "") {
+            res.render('register', { errMsg: "Input is empty or contains only white space" })
+        } else {
+            console.log("first else");
+            const emailData = await Admin.findOne({ adminEmail: email })
+            if (emailData) {
+                console.log("checking if email exist");
+                res.render('register', { errMsg: "Email is already Registered" })
+            } else {
+                console.log("Email doesnt exist");
+                const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/;;
+                if (password.match(regex)) {
+                    console.log("checking password is same or not");
+                    if (password != repassword) {
+                        console.log("passwrd is not same");
+                        res.render('register', { errMsg: "Confirm password is not same" })
+                    } else {
+                        console.log("password is same");
+                        const sPassword = await bcrypt.hash(password, 10)
+                        console.log("encrypting password");
+                        const admin = new Admin({
+                            name: name,
+                            adminEmail: email,
+                            adminPassword: sPassword
+                        })
+                        console.log("password encrption completed");
+                        const adminData = await admin.save()
+                        console.log("saving to db");
+                        if (adminData) {
+                            console.log("task completed and account created");
+                            res.redirect('/login')
+                        } else {
+                            console.log("task failed successfully");
+                            res.render('register', { errMsg: "Something went wrong" })
+                        }
+                    }
+                } else {
+                    res.render('register', { errMsg: "Password must contain atleast 8 alphanumeric character" })
+                }
+            }
+        }
+    } catch (error) {
+        console.log(error.message)
     }
 }
 
@@ -288,32 +417,32 @@ const loadAddProduct = async (req, res) => {
 const addProduct = async (req, res) => {
     try {
         if (req.session.adminlogged) {
-            let { SKU, productName, MRP, salePrice, category, stock, description } = req.body
-            if (!productName.trim() || !MRP.trim() || !salePrice.trim() || !stock.trim() || !description.trim()) {
+            let { SKU, productName, category} = req.body
+            if (!productName.trim() ) {
                 const categoryData = await Category.find({})
                 res.render('addProduct', { categoryData, SKU, errMsg: "Input is empty or contains only white space" })
             } else {
-                console.log(req.files);
-                const imageUpload = [];
-                for (let i = 0; i < req.files.length; i++) {
-                    imageUpload[i] = req.files[i].filename;
-                }
-                const products = new Product({
-                    SKU: SKU,
-                    productName: productName,
-                    MRP: MRP,
-                    salePrice: salePrice,
-                    stock: stock,
-                    category: category,
-                    description: description,
-                    image: imageUpload
-                })
-                const productData = await products.save();
-                if (productData) {
-                    res.redirect('/admin/products')
+                const productNameCheck = await Product.findOne({ productName: productName })
+                console.log("product name check");
+                if (productNameCheck) {
+                    console.log("if worked");
+                    res.redirect('../admin/addProduct?errMsg=Same Product name already exists..')
+                    console.log("no error");
                 } else {
-                    const categoryData = await Category.find({})
-                    res.render('addProduct', { categoryData, SKU, errMsg: "Something went wrong. Please Retry Again" })
+                    console.log("else worked");
+                    console.log(req.files);
+                    const products = new Product({
+                        SKU: SKU,
+                        productName: productName,
+                        category: category,
+                    })
+                    const productData = await products.save();
+                    if (productData) {
+                        res.redirect('/admin/products')
+                    } else {
+                        const categoryData = await Category.find({})
+                        res.render('addProduct', { categoryData, SKU, errMsg: "Something went wrong. Please Retry Again" })
+                    }
                 }
             }
         } else {
@@ -341,26 +470,18 @@ const updateProduct = async (req, res) => {
     try {
         if (req.session.adminlogged) {
 
-            let { id, SKU, productName, MRP, salePrice, category, stock, description } = req.body;
+            let { id, SKU, category,productName } = req.body;
             const productData = await Product.findOne({ _id: id }).populate('category')
             const categoryData = await Category.find({})
 
-            if (!productName.trim() || !MRP.trim() || !salePrice.trim() || !stock.trim() || !description.trim()) {
+            if (!productName.trim()) {
                 res.render("editProduct", { categoryData, errMsg: "Input is empty or contains only white space", productData })
             } else {
-                for (let i = 0; i < req.files.length; i++) {
-                    const imageUpload = req.files[i].filename;
-                    await Product.updateOne({ _id: req.body.id }, { $push: { image: imageUpload } })
-                }
                 await Product.findByIdAndUpdate({ _id: id }, {
                     $set: {
                         SKU: SKU,
-                        productName: productName,
-                        MRP: MRP,
-                        salePrice: salePrice,
-                        stock: stock,
                         category: category,
-                        description: description
+                        productName:productName
                     }
                 })
                 res.redirect('/admin/products');
@@ -373,21 +494,21 @@ const updateProduct = async (req, res) => {
         console.log(error.message)
     }
 }
-const imageDelete = async (req, res) => {
-    try {
-        if (req.session.adminlogged) {
-            const img = req.query.img;
-            const imageData = await Product.updateOne({ $pull: { image: { $in: [img] } } })
-            if (imageData) {
-                res.redirect('/admin/editProduct?id=' + req.session.productId);
-            }
-        } else {
-            res.render('login')
-        }
-    } catch (error) {
-        console.log(error.message);
-    }
-}
+// const imageDelete = async (req, res) => {
+//     try {
+//         if (req.session.adminlogged) {
+//             const img = req.query.img;
+//             const imageData = await Product.updateOne({ $pull: { image: { $in: [img] } } })
+//             if (imageData) {
+//                 res.redirect('/admin/editProduct?id=' + req.session.productId);
+//             }
+//         } else {
+//             res.render('login')
+//         }
+//     } catch (error) {
+//         console.log(error.message);
+//     }
+// }
 const deleteProduct = async (req, res) => {
     try {
         if (req.session.adminlogged) {
@@ -408,6 +529,8 @@ const deleteProduct = async (req, res) => {
 module.exports = {
     loadLogin,
     verifyLogin,
+    loadRegister,
+    insertAdmin,
     loadDashoard,
     loadUserDetails,
     logOut,
@@ -424,6 +547,6 @@ module.exports = {
     addProduct,
     loadEditProduct,
     updateProduct,
-    imageDelete,
+   // imageDelete,
     deleteProduct,
 }

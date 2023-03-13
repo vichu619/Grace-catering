@@ -1,0 +1,28 @@
+<configuration>
+    <system.webServer>
+        <handlers>
+            <add name="test" path="index.js" verb="*" models="iisnode" />
+        </handlers>
+
+        <rewrite>
+            <rule name="nodejs">
+                <match url="(.*)" />
+                <conditions>
+                    <add Input="{REQUEST_FILENAME}" matchType="IsFile" negate="true">
+                </conditions>
+                <action type="Rewrite" url="/index.js" />
+            </rule>
+        </rewrite>
+
+        <security>
+            <requestFiltering>
+                <hiddenSegments>
+                    <add segment="node_modules" />
+                    <add segment="iisnode" />
+                </hiddenSegments>
+            </requestFiltering>
+        </security>
+
+        <directoryBrowse enabled="true" />
+    </system.webServer>
+</configuration>

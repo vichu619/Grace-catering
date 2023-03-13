@@ -67,7 +67,7 @@ const insertUser = async (req, res) => {
                         })
                         const userData = await user.save()
                         if (userData) {
-                            res.redirect('/login')
+                            res.redirect('/home')
                         } else {
                             res.render('register', { errMsg: "Something went wrong" })
                         }
